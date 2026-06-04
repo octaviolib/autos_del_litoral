@@ -1,3 +1,6 @@
+from datos import *
+
+
 def alta_auto():
 
     autos = cargar_datos()

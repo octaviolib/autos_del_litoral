@@ -18,9 +18,7 @@ def main():
 
         if opcion == "1":
             menu_autos()
-        if opcion == "5":
-            menu_vendedores()
-
+      
         elif opcion == "2":
             print("Módulo Clientes en desarrollo")
 
@@ -31,7 +29,7 @@ def main():
             print("Módulo Reservas en desarrollo")
 
         elif opcion == "5":
-            print("Módulo Vendedores en desarrollo")
+            menu_vendedores()
 
         elif opcion == "0":
             print("Programa finalizado")

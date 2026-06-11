@@ -18,6 +18,8 @@ def main():
 
         if opcion == "1":
             menu_autos()
+        if opcion == "5":
+            menu_vendedores()
 
         elif opcion == "2":
             print("Módulo Clientes en desarrollo")

@@ -1,4 +1,5 @@
 from datetime import date
+from vendedores import menu_vendedores
 
 vendedores = []
 ventas = []

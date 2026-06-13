@@ -158,4 +158,4 @@ def menu_vendedores():
 
         else:
             print("Opción inválida.")
-menu_vendedores()
+#menu_vendedores()

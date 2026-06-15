@@ -200,4 +200,5 @@ def pausar():
 def volver_al_menu_principal():
     pass
 
-menu_reservas()
+if __name__ == "__main__":
+    menu_reservas()

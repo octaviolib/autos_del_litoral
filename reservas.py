@@ -199,8 +199,5 @@ def mostrar_reserva_formateada(reserva):
 def pausar():
     input(f'\n Presione ENTER para continuar...')
 
-def volver_al_menu_principal():
-    pass
-
 if __name__ == "__main__":
     menu_reservas()

@@ -1,5 +1,6 @@
 from menu import menu_autos
 from vendedores import menu_vendedores
+from reservas import menu_reservas
 def main():
 
     while True:
@@ -26,7 +27,7 @@ def main():
             print("Módulo Ventas en desarrollo")
 
         elif opcion == "4":
-            print("Módulo Reservas en desarrollo")
+            menu_reservas()
 
         elif opcion == "5":
             menu_vendedores()

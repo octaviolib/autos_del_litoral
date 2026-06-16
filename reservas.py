@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-reservas = [] #lista donde se van a aguardar las distintas reservas
+reservas = [] 
 id_reserva = 1
 
 def menu_reservas():
@@ -29,8 +29,8 @@ def menu_reservas():
         else:
             print('Opción Inválida, vuelve a intentar')
 
-def crear_reserva():           #nombre, apellido, dni son datos que debieran provenir de Clientes ligado a DNI
-    global id_reserva          #patente_auto              # dato que proviene de AUTO
+def crear_reserva():           
+    global id_reserva          
     while True:
         try:
             fecha_texto = input("Ingrese la fecha de reserva (DD/MM/AAAA): ")
@@ -41,7 +41,7 @@ def crear_reserva():           #nombre, apellido, dni son datos que debieran pro
 
     while True:
         try:
-            monto_sena = int(input('Monto entregado por el cliente: $ '))    #validar entrada del usuario
+            monto_sena = int(input('Monto entregado por el cliente: $ '))    
             if monto_sena > 0:
                 break
             print("El monto debe ser mayor a cero.")
@@ -49,7 +49,7 @@ def crear_reserva():           #nombre, apellido, dni son datos que debieran pro
             print("Ingrese un número válido.")
             
     dias_vigencia = 30
-    fecha_limite = fecha_reserva + timedelta(days=dias_vigencia)    #ahora se calcula solo
+    fecha_limite = fecha_reserva + timedelta(days=dias_vigencia)    
     
     reserva = {
         "id_reserva": id_reserva,

@@ -5,7 +5,9 @@ id_reserva = 1
 
 def menu_reservas():
     while True:
+        print(\n"=" * 40)
         print('  MENÚ RESERVAS\n')
+        print("=" * 40)
         print('1. Crear reserva')
         print('2. Mostrar reserva')
         print('3. Buscar reserva')

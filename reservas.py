@@ -5,6 +5,24 @@ from datetime import datetime, timedelta
 reservas = [] 
 id_reserva = 1
 
+def cargar_reservas():
+    global RESERVAS
+
+    if os.path.exists("reservas.json"):
+        with open("reservas.json", "r", encoding="utf-8") as archivo:
+            try:
+                RESERVAS = json.load(archivo)
+            except json.JSONDecodeError:
+                RESERVAS = []
+    else:
+        RESERVAS = []
+
+def guardar_reservas():
+    with open("reservas.json", "w", encoding="utf-8") as archivo:
+        json.dump(RESERVAS, archivo, indent=2, ensure_ascii=False)
+
+
+
 def menu_reservas():
     while True:
         print(\n"=" * 40)
@@ -203,3 +221,6 @@ def pausar():
 
 if __name__ == "__main__":
     menu_reservas()
+
+cargar_reservas()
+print(RESERVAS)

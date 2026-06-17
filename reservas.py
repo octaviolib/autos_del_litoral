@@ -223,7 +223,5 @@ def pausar():
     input(f'\n Presione ENTER para continuar...')
 
 if __name__ == "__main__":
+    cargar_reservas()
     menu_reservas()
-
-cargar_reservas()
-print(reservas)

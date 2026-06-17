@@ -85,6 +85,7 @@ def crear_reserva():
     }
 
     reservas.append(reserva)
+    guardar_reservas()
     id_reserva += 1
 
     print("=" * 40)
@@ -148,6 +149,7 @@ def cancelar_reserva():
 
             if cancelar == "si":
                 reserva["estado"] = "Cancelado"
+                guardar_reservas()
                 print("\n RESERVA CANCELADA CORRECTAMENTE.")
                 mostrar_reserva_formateada(reserva)
 
@@ -185,6 +187,7 @@ def concretar_reserva():
 
             if concretar == "si":
                 reserva["estado"] = "Activo"
+                guardar_reservas()
                 print("Estado de la reseva: CONCRETADO")
 
             elif concretar == "no":

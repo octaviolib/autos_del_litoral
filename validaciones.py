@@ -14,6 +14,7 @@ def pedir_float(mensaje):
 #por si lo que se ingresa no es un numero
         except ValueError:
             print("Debe ingresar un número válido.")
+#valida numero entero en kilometros y año 
             
 def pedir_entero(mensaje):
 

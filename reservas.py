@@ -74,9 +74,16 @@ def crear_reserva():
     dias_vigencia = 30
     fecha_limite = fecha_reserva + timedelta(days=dias_vigencia)    
     
+    while True:
+        try:
+            id:cliente = int(input("Ingrese el ID del cliente: "))
+            break
+        except ValueError:
+            print("Ingrese un número válido.")
+    
     reserva = {
         "id_reserva": id_reserva,
-        "id_cliente": 1,
+        "id_cliente": id_cliente,
         "id_auto": 1,
         "id_vendedor" : 1, 
         "fecha_reserva": fecha_reserva.strftime("%d/%m/%Y"),
@@ -145,6 +152,11 @@ def cancelar_reserva():
 
             mostrar_reserva_formateada(reserva)
 
+        if reserva["estado"] == "Cancelado": 
+            print("La reserva ya está cancelada.")
+            pausar()
+            return
+
             cancelar = input("\n ¿Desea cancelar la reserva? (Si/No): ").lower()
 
             if cancelar == "si":
@@ -183,10 +195,15 @@ def concretar_reserva():
 
             mostrar_reserva_formateada(reserva)
 
+        if reserva["estado"] == "Cancelado":
+            print("No se puede concretar una reserva cancelada.")
+            pausar()
+            return
+
             concretar = input("¿Desea concretar la reserva? (Si/No): ").lower()
 
             if concretar == "si":
-                reserva["estado"] = "Activo"
+                reserva["estado"] = "Concretado"
                 guardar_reservas()
                 print("Estado de la reseva: CONCRETADO")
 

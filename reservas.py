@@ -76,7 +76,7 @@ def crear_reserva():
     
     while True:
         try:
-            id:cliente = int(input("Ingrese el ID del cliente: "))
+            id_cliente = int(input("Ingrese el ID del cliente: "))
             break
         except ValueError:
             print("Ingrese un número válido.")

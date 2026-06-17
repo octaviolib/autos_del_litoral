@@ -1,11 +1,13 @@
-from datos import *
+from datos import * #importa datos desde  el modulo datos
+from validaciones  import * #importar datos desde el modulo validaciones
 
+# se agrega un nuevo auto en el sistema
 
 def alta_auto():
 
     autos = cargar_datos()
 
-    patente = input("Patente (escriba VOLVER para cancelar): ")
+    patente = input("patente (escriba VOLVER para cancelar): ")
 
     if patente.upper() == "VOLVER":
         return
@@ -15,39 +17,47 @@ def alta_auto():
     if marca.upper() == "VOLVER":
         return
 
-    modelo = input("Modelo (escriba VOLVER para cancelar): ")
+    modelo = input("modelo (escriba VOLVER para cancelar): ")
 
     if modelo.upper() == "VOLVER":
         return
+    
+    anio = input("año (escriba VOLVER para cancelar): ")
 
-    precio = input("Precio (escriba VOLVER para cancelar): ")
-
-    if precio.upper() == "VOLVER":
+    if anio.upper() == "VOLVER":
         return
+    # Solicitar y validar el precio en el menu validaciones
+    precio = pedir_float("Precio (escriba VOLVER para cancelar): ")
+
+    if precio is None:
+        return
+#crea el diccionario  del auto que se va a cargar y l ID se calcula como la
+#cantidad actual de autos + 1
 
     auto = {
         "id": len(autos) + 1,
         "patente": patente,
         "marca": marca,
         "modelo": modelo,
+        "anio": int(anio),
         "precio": float(precio),
         "estado": "en venta"
     }
-
+# Agrega el auto a la lista y guarda los cambios
     autos.append(auto)
     guardar_datos(autos)
 
     print("Auto cargado correctamente.")
 
-
+#aca muestra todos los autos cargados
 def listar_autos():
-
+# Carga la lista de autos desde el archivo
     autos = cargar_datos()
-
+#se sale si no hay autos
     if len(autos) == 0:
         print("No hay autos cargados")
         return
-
+# Recorre y muestra los datos de los autos 
     for auto in autos:
 
         print("\n------------------")
@@ -57,14 +67,14 @@ def listar_autos():
         print("Modelo:", auto["modelo"])
         print("Precio:", auto["precio"])
         print("Estado:", auto["estado"])
-
-
+        print("año:", auto["anio"])
+#busca un auto por su patente, seria el id que se usa 
 def buscar_auto():
-
+# Carga la lista de autos
     autos = cargar_datos()
 
-    patente = input("Ingrese la patente a buscar: ")
-
+    patente = input("escriba la patente a buscar: ")
+# Recorre los autos comparando patentes sin diferenciar mayusculas o minusculas
     for auto in autos:
 
         if auto["patente"].lower() == patente.lower():
@@ -76,12 +86,13 @@ def buscar_auto():
             print("Modelo:", auto["modelo"])
             print("Precio:", auto["precio"])
             print("Estado:", auto["estado"])
+            print("año", auto["anio"])
 
             return
 
     print("Auto no encontrado")
 
-
+#modifica el estado de un auto
 def cambiar_estado_auto():
 
     autos = cargar_datos()
@@ -91,7 +102,7 @@ def cambiar_estado_auto():
     for auto in autos:
 
         if auto["patente"].lower() == patente.lower():
-
+ # Muestra el estado actual antes de cambiarlo
             print("\nEstado actual:", auto["estado"])
 
             print("\n1. En venta")
@@ -114,7 +125,7 @@ def cambiar_estado_auto():
                 auto["estado"] = "en taller"
 
             else:
-                print("Opción inválida")
+                print("opcion inválida")
                 return
 
             guardar_datos(autos)
@@ -124,7 +135,7 @@ def cambiar_estado_auto():
 
     print("Auto no encontrado")
 
-
+#edita los datos de un auto
 def modificar_auto():
 
     autos = cargar_datos()
@@ -146,7 +157,7 @@ def modificar_auto():
 
     print("Auto no encontrado")
 
-
+#elimina un auto del sistema
 def baja_auto():
 
     autos = cargar_datos()
@@ -154,7 +165,7 @@ def baja_auto():
     patente = input("Patente a eliminar: ")
 
     for auto in autos:
-
+# Elimina el auto de la lista y guarda los cambios
         if auto["patente"].lower() == patente.lower():
 
             autos.remove(auto)

@@ -6,20 +6,20 @@ reservas = []
 id_reserva = 1
 
 def cargar_reservas():
-    global RESERVAS
+    global reservas
 
     if os.path.exists("reservas.json"):
         with open("reservas.json", "r", encoding="utf-8") as archivo:
             try:
-                RESERVAS = json.load(archivo)
+                reservas = json.load(archivo)
             except json.JSONDecodeError:
-                RESERVAS = []
+                reservas = []
     else:
-        RESERVAS = []
+        reservas = []
 
 def guardar_reservas():
     with open("reservas.json", "w", encoding="utf-8") as archivo:
-        json.dump(RESERVAS, archivo, indent=2, ensure_ascii=False)
+        json.dump(reservas, archivo, indent=2, ensure_ascii=False)
 
 
 
@@ -223,4 +223,4 @@ if __name__ == "__main__":
     menu_reservas()
 
 cargar_reservas()
-print(RESERVAS)
+print(reservas)

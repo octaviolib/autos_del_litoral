@@ -25,8 +25,8 @@ def guardar_reservas():
 
 def menu_reservas():
     while True:
-        print(\n"=" * 40)
-        print('  MENÚ RESERVAS\n')
+        print("\n" + "=" * 40)
+        print('  MENÚ RESERVAS')
         print("=" * 40)
         print('1. Crear reserva')
         print('2. Mostrar reserva')

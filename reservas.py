@@ -3,7 +3,6 @@ import os
 from datetime import datetime, timedelta
 
 reservas = [] 
-id_reserva = 1
 
 def cargar_reservas():
     global reservas
@@ -20,8 +19,6 @@ def cargar_reservas():
 def guardar_reservas():
     with open("reservas.json", "w", encoding="utf-8") as archivo:
         json.dump(reservas, archivo, indent=2, ensure_ascii=False)
-
-
 
 def menu_reservas():
     while True:
@@ -52,7 +49,11 @@ def menu_reservas():
             print('Opción Inválida, vuelve a intentar')
 
 def crear_reserva():           
-    global id_reserva          
+    if len(reservas) > 0:
+        id_reserva = reservas[-1]["id_reserva"] + 1
+    else:
+        id_reserva = 1
+        
     while True:
         try:
             fecha_texto = input("Ingrese la fecha de reserva (DD/MM/AAAA): ")
@@ -86,8 +87,7 @@ def crear_reserva():
 
     reservas.append(reserva)
     guardar_reservas()
-    id_reserva += 1
-
+    
     print("=" * 40)
     print("RESERVA REGISTRADA")
     

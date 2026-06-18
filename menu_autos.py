@@ -1,3 +1,5 @@
+#autos en stock
+
 from autos import *
 
 def menu_autos():
@@ -5,7 +7,7 @@ def menu_autos():
     while True:
 
         print("\n═══════════════════════════════════════════════════")
-        print(" AUTOS EN STOCK")
+        print("       AUTOS EN STOCK")
         print("═══════════════════════════════════════════════════")
         print("1. Cargar un auto nuevo")
         print("2. Ver listado de autos")
@@ -15,13 +17,13 @@ def menu_autos():
         print("6. Modificar un auto")
         print("9. Volver a la pantalla principal")
 
-        opcion = input("¿Qué querés hacer? ")
+        opcion = input("Seleccione una opción:  ")
 
         if opcion == "1":
             alta_auto()
 
         elif opcion == "2":
-            listar_autos()
+            mostrar_lista_autos()
 
         elif opcion == "3":
             buscar_auto()

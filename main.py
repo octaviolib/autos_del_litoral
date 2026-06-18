@@ -1,4 +1,4 @@
-from menu import menu_autos              # Importa los menú correspondientes a cada modulo correspondiente
+from menu_autos import menu_autos              # Importa los menú correspondientes a cada modulo correspondiente
 from vendedores import menu_vendedores   
 from reservas import menu_reservas      
 from clientes import menu_de_cliente     

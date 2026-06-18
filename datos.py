@@ -1,3 +1,5 @@
+#autos en stock
+
 import json # maneja la lectura y escritura de archivos en formato JSON
 import os #interactua con el sistema operativo
 
@@ -16,6 +18,7 @@ def cargar_datos():
         return []
 #abre el archivo en modo escritura y guarda la lista actualizada
 def guardar_datos(autos):
+
 
 
     with open(ARCHIVO, "w", encoding="utf-8") as archivo:

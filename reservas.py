@@ -1,6 +1,8 @@
 import json
 import os
 from datetime import datetime, timedelta
+import clientes 
+import autos
 
 reservas = [] 
 
@@ -73,18 +75,62 @@ def crear_reserva():
             
     dias_vigencia = 30
     fecha_limite = fecha_reserva + timedelta(days=dias_vigencia)    
-    
+
+    clientes.cargar_clientes()
+
     while True:
         try:
             id_cliente = int(input("Ingrese el ID del cliente: "))
-            break
         except ValueError:
             print("Ingrese un número válido.")
+            continue
+
+        cliente_encontrado = False
+
+        for cliente in clientes.CLIENTES:
+            if cliente["ID"] == id_cliente:
+                cliente_encontrado = True
+                break
     
+        if cliente_encontrado:
+            break
+
+        print("No existe un cliente con es ID.")
+    
+    autos_disponibles = autos.cargar_datos()
+
+    while True:
+        try: 
+            id_auto = int(input("Ingrese el ID del auto: "))
+        except ValueError:
+            print("Ingrese un número válido.")
+            continue
+        
+        auto_encontrado = False
+        auto_disponible = False
+
+        for auto in autos_disponibles:
+            if auto["id"] == id_auto:
+                    
+                auto_encontrado = True
+
+                if auto["estado"] == "en venta":
+                    auto_disponible = True
+                else:
+                    print(f"El auto no está disponible. Estado actual: {auto['estado']}")
+                
+                break
+                    
+        if auto_disponible:
+            break
+        
+        if not auto_encontrado: 
+            print("No existe un auto con ese ID.")
+
     reserva = {
         "id_reserva": id_reserva,
         "id_cliente": id_cliente,
-        "id_auto": 1,
+        "id_auto": id_auto,
         "id_vendedor" : 1, 
         "fecha_reserva": fecha_reserva.strftime("%d/%m/%Y"),
         "monto_sena": monto_sena,
@@ -94,6 +140,13 @@ def crear_reserva():
 
     reservas.append(reserva)
     guardar_reservas()
+
+    for auto in autos_disponibles:
+        if auto["id"] == id_auto:
+            auto["estado"] = "reservado"
+            break
+
+    autos.guardar_datos(autos_disponibles)
     
     print("=" * 40)
     print("RESERVA REGISTRADA")
@@ -152,16 +205,26 @@ def cancelar_reserva():
 
             mostrar_reserva_formateada(reserva)
 
-        if reserva["estado"] == "Cancelado": 
-            print("La reserva ya está cancelada.")
-            pausar()
-            return
+            if reserva["estado"] == "Cancelado": 
+                print("La reserva ya está cancelada.")
+                pausar()
+                return
 
             cancelar = input("\n ¿Desea cancelar la reserva? (Si/No): ").lower()
 
             if cancelar == "si":
                 reserva["estado"] = "Cancelado"
                 guardar_reservas()
+
+                autos_disponibles = autos.cargar_datos()
+
+                for auto in autos_disponibles:
+                    if auto["id"] == reserva["id_auto"]:
+                        auto["estado"] = "en venta"
+                        break
+                
+                autos.guardar_datos(autos_disponibles)
+
                 print("\n RESERVA CANCELADA CORRECTAMENTE.")
                 mostrar_reserva_formateada(reserva)
 
@@ -172,7 +235,6 @@ def cancelar_reserva():
                 print('Opción inválida')
 
             pausar()
-
             return
 
     print("=" * 40)
@@ -195,26 +257,41 @@ def concretar_reserva():
 
             mostrar_reserva_formateada(reserva)
 
-        if reserva["estado"] == "Cancelado":
-            print("No se puede concretar una reserva cancelada.")
-            pausar()
-            return
+            if reserva["estado"] == "Cancelado":
+                print("No se puede concretar una reserva cancelada.")
+                pausar()
+                return
+
+            if reserva["estado"] == "Concretada":
+                print("La reserva ya fue concretada.")
+                pausar()
+                return
 
             concretar = input("¿Desea concretar la reserva? (Si/No): ").lower()
 
             if concretar == "si":
                 reserva["estado"] = "Concretado"
                 guardar_reservas()
-                print("Estado de la reseva: CONCRETADO")
 
+                autos_disponibles = autos.cargar_datos()
+
+                for auto in autos_disponibles:
+                    if auto["id"] == reserva["id_auto"]:
+                        auto["estado"] = "vendido"
+                        break
+
+                autos.guardar_datos(autos_disponibles)
+
+                print("\nRESERVA CONCRETADA CORRECTAMENTE.")
+                mostrar_reserva_formateada(reserva)
+            
             elif concretar == "no":
-                print("La reserva continúa: RESERVADA")
+                print("\nLa reserva continúa: RESERVADA")
 
             else:
                 print('Opción inválida')
 
             pausar()
-
             return
 
     print("=" * 40)

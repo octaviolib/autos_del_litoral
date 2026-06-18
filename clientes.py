@@ -1,24 +1,6 @@
 import json
 import os
 
-CLIENTES = []
-
-def cargar_clientes(): #cargo los clientes que tengo en json
-    global CLIENTES
-
-    if os.path.exists("clientes.json"):
-        with open("clientes.json", "r", encoding="utf-8") as archivo:
-            try:
-                CLIENTES = json.load(archivo)
-            except json.JSONDecodeError:
-                CLIENTES = []
-    else:
-        CLIENTES = []
-
-def guardar_clientes(): #despues de usar la lista guardo de nuevo a json
-    with open("clientes.json", "w", encoding="utf-8") as archivo:
-        json.dump(CLIENTES, archivo, indent=2, ensure_ascii=False)
-        
 def menu_de_cliente():
     while True:
         print("\n" + "="*40)
@@ -49,6 +31,26 @@ def menu_de_cliente():
             break
         else:
             print("Opción inválida. Intente de nuevo.")
+
+CLIENTES = []
+
+def cargar_clientes(): #cargo los clientes que tengo en json
+    global CLIENTES
+
+    if os.path.exists("clientes.json"):
+        with open("clientes.json", "r", encoding="utf-8") as archivo:
+            try:
+                CLIENTES = json.load(archivo)
+            except json.JSONDecodeError:
+                CLIENTES = []
+    else:
+        CLIENTES = []
+
+def guardar_clientes(): #despues de usar la lista guardo de nuevo a json
+    with open("clientes.json", "w", encoding="utf-8") as archivo:
+        json.dump(CLIENTES, archivo, indent=2, ensure_ascii=False)
+        
+
  
 # ─────────────────────────────────────────────
 #  HELPER: pregunta si continuar o volver
@@ -75,17 +77,32 @@ def registrar_clientes():
         else:
             nuevo_id = 1
         
+        dni = input("Ingrese su DNI: ").strip()
+        nombre = input("Ingrese su Nombre Completo: ").strip().title()
+        telefono = input("Ingrese su Telefono: ").strip()
         
+        #  DE VALIDACIÓN DE EMAIL
+        while True:
+            email_input = input("Ingrese su Email: ").strip().lower()
+            if "@" in email_input:
+                email = email_input
+                break  # Email correcto, salimos del bucle de validación
+            else:
+                print("Correo incorrecto. El email debe incluir el caracter '@'.")
+        
+
+        localidad = input("Ingrese su localidad: ").strip().title()
+        que_busca = input("¿Qué busca?: ").strip()
+        
+       
         nuevo_cliente = {
-            
             "ID": nuevo_id,
-            "Dni": input("Ingrese su DNI: "),
-            "Nombre_completo": input("Ingrese su Nombre Completo: ").title(),
-            "Telefono": input("Ingrese su Telefono: "),
-            "Email": input("Ingrese su Email: "),
-            "Localidad": input("Ingrese su localidad: ").title(),
-            "Que_busca": input("Que busca: "),
-            
+            "Dni": dni,
+            "Nombre_completo": nombre,
+            "Telefono": telefono,
+            "Email": email,
+            "Localidad": localidad,
+            "Que_busca": que_busca
         }
 
         CLIENTES.append(nuevo_cliente)
@@ -123,116 +140,141 @@ def eliminar_cliente():
             break  # Ahora este break sí está dentro del 'while True'
 
 
-def busqueda_cliente(): #Buscar a un cliente por DNI o por nombre
+def busqueda_cliente():
     cargar_clientes()
     
-    print('¿Quiere buscar por DNI o por Nombre Completo?')
-    print('1_ Dni')
-    print('2_Nombre Completo')
-    print('0_Volver')
-    
-    opcion = input('ingrese una Opcion')
-    
-    if opcion == '1':
-        dni = input('Ingrese el nro de DNI: ')
-        encontrado = False
+    while True: # Este while principal mantiene el menú de búsqueda activo
+        print('\n ¿Cómo quiere buscar al cliente?')
+        print('1_ Por DNI')
+        print('2_ Por Nombre Completo')
+        print('0_ Volver al menú principal')
+        print('=======================================')
         
-        for cliente in CLIENTES:
-            if cliente ['Dni'] == dni:
-                print("\nCliente encontrado:")
-                print(f"ID: {cliente['ID']}")
-                print(f"Dni: {cliente['Dni']}")
-                print(f"Nombre completo: {cliente['Nombre_completo']}")
-                print(f"Email: {cliente['Email']}")
-                print(f"Localidad: {cliente['Localidad']}")
-                print(f"busca: {cliente['Que_busca']}")
-                encontrado: True
-                break
-                
-            else:
-                print("\nNo se encontró ningún cliente con ese DNI.")
-    
-    elif opcion == "2":
-        nombre = input("Ingrese el nombre completo (Nombre Apellido): ").title()
-        encontrado = False
-        for cliente in CLIENTES:
+        opcion = input('Ingrese una opción: ').strip()
+        
+        if opcion == '0':
+            print("Regresando al menú principal...")
+            break # Rompe el while
             
-           if cliente ['Nombre_completo'] == nombre:
-                print("\nCliente encontrado:")
-                print(f"ID: {cliente['ID']}")
-                print(f"DNI: {cliente['Dni']}")
-                print(f"Nombre completo: {cliente['Nombre_completo']}")
-                print(f"Email: {cliente['Email']}")
-                print(f"Localidad: {cliente['Localidad']}")
-                print(f"busca: {cliente['Que_busca']}")
-                encontrado: True
-                break
-    elif opcion == '0':
-                return   
+        elif opcion == '1':
+            while True: 
+                dni = input('\nIngrese el nro de DNI: ').strip()
+                encontrado = False
+                
+                for cliente in CLIENTES:
+                    if cliente['Dni'] == dni:
+                        print("\n✅ Cliente encontrado:")
+                        print(f"ID: {cliente['ID']}")
+                        print(f"Dni: {cliente['Dni']}")
+                        print(f"Nombre completo: {cliente['Nombre_completo']}")
+                        print(f"Email: {cliente['Email']}")
+                        print(f"Localidad: {cliente['Localidad']}")
+                        print(f"Busca: {cliente['Que_busca']}")
+                        encontrado = True
+                        break 
+                
+                if not encontrado:
+                    print("\n❌ No se encontró ningún cliente con ese DNI.")
+                
+                if not continuar_o_menu("¿Desea realizar otra búsqueda de DNI?"):
+                    break # Rompe este bucle interno y vuelve al menú de opciones de búsqueda
+        
+        elif opcion == '2':
+            while True: # Agregamos el bucle para la opción de nombre
+                nombre = input('\nIngrese el Nombre Completo (Nombre Apellido): ').strip().title()
+                encontrado = False
+                
+                for cliente in CLIENTES:
+                    if cliente['Nombre_completo'] == nombre:
+                        print("\n Cliente encontrado:")
+                        print(f"ID: {cliente['ID']}")
+                        print(f"Dni: {cliente['Dni']}")
+                        print(f"Nombre completo: {cliente['Nombre_completo']}")
+                        print(f"Email: {cliente['Email']}")
+                        print(f"Localidad: {cliente['Localidad']}")
+                        print(f"Busca: {cliente['Que_busca']}")
+                        encontrado = True
+                        break 
+                
+                if not encontrado:
+                    print("\n No se encontró ningún cliente con ese nombre completo.")
+                
+                if not continuar_o_menu("¿Desea realizar otra búsqueda por Nombre?"):
+                    break # Rompe este bucle interno 
 
-
-    else:
-        print("Opción inválida.")
+        else:
+            print("\n⚠ Opción inválida. Por favor, seleccione 1, 2 o 0.")
         
         
             
 def modificar_cliente():
     cargar_clientes()
+    
+    while True:
+            buscar = int(input("Ingrese el ID del cliente a editar: "))
+            encontrado = False
 
-    buscar = int(input("Ingrese el ID del cliente a editar: "))
-    encontrado = False
+            for cliente in CLIENTES:
+                if cliente["ID"] == buscar:
+                    print("\nCliente encontrado:")
+                    print(f"1) DNI: {cliente['Dni']}")
+                    print(f"2) Nombre completo: {cliente['Nombre_completo']}")
+                    print(f"3) Teléfono: {cliente['Telefono']}")
+                    print(f"4) Email: {cliente['Email']}")
+                    print(f"5) Localidad: {cliente['Localidad']}")
+                    print(f"6) Qué busca: {cliente['Que_busca']}")
+                    print("7) Cancelar edición")
 
-    for cliente in CLIENTES:
-        if cliente["ID"] == buscar:
-            print("\nCliente encontrado:")
-            print(f"1) DNI: {cliente['Dni']}")
-            print(f"2) Nombre completo: {cliente['Nombre_completo']}")
-            print(f"3) Teléfono: {cliente['Telefono']}")
-            print(f"4) Email: {cliente['Email']}")
-            print(f"5) Localidad: {cliente['Localidad']}")
-            print(f"6) Qué busca: {cliente['Que_busca']}")
-            print("7) Cancelar edición")
+                    opcion = input("\n¿Qué desea editar? (1-7): ")
 
-            opcion = input("\n¿Qué desea editar? (1-7): ")
+                    if opcion == "1":
+                        cliente["Dni"] = input("Nuevo DNI: ")
+                    elif opcion == "2":
+                        cliente["Nombre_completo"] = input("Nuevo nombre completo: ").title()
+                    elif opcion == "3":
+                        cliente["Telefono"] = input("Nuevo teléfono: ")
+                    elif opcion == "4":
+                        cliente["Email"] = input("Nuevo email: ")
+                    elif opcion == "5":
+                        cliente["Localidad"] = input("Nueva localidad: ").title()
+                    elif opcion == "6":
+                        cliente["Que_busca"] = input("Nuevo valor de 'Qué busca': ")
+                    elif opcion == "7":
+                        print("Edición cancelada.")
+                        return
+                    else:
+                        print("Opción inválida.")
+                        return
 
-            if opcion == "1":
-                cliente["Dni"] = input("Nuevo DNI: ")
-            elif opcion == "2":
-                cliente["Nombre_completo"] = input("Nuevo nombre completo: ").title()
-            elif opcion == "3":
-                cliente["Telefono"] = input("Nuevo teléfono: ")
-            elif opcion == "4":
-                cliente["Email"] = input("Nuevo email: ")
-            elif opcion == "5":
-                cliente["Localidad"] = input("Nueva localidad: ").title()
-            elif opcion == "6":
-                cliente["Que_busca"] = input("Nuevo valor de 'Qué busca': ")
-            elif opcion == "7":
-                print("Edición cancelada.")
-                return
-            else:
-                print("Opción inválida.")
-                return
+                    guardar_clientes()
+                    print("\nCliente actualizado con éxito.")
+                    encontrado = True
+                    break
 
-            guardar_clientes()
-            print("\nCliente actualizado con éxito.")
-            encontrado = True
-            break
-
-    if not encontrado:
-        print("\nNo se encontró ningún cliente con ese ID.")
+            if not encontrado:
+                print("\nNo se encontró ningún cliente con ese ID.")
+                
+            if not continuar_o_menu("¿Desea modificar otro cliente?"):
+                break
 
      
 def listar_clientes():
-    cargar_clientes()
+    while True:
+        cargar_clientes()
 
-    print("\nLos clientes registrados son:\n")
+        print("\nLos clientes registrados son:\n")
 
-    if len(CLIENTES) == 0:
-        print("Aún no tenemos clientes registrados")
-    else:
+        if len(CLIENTES) == 0:
+            print("Aún no tenemos clientes registrados")
+            break
+        
         for cliente in CLIENTES:
-            print(f"-ID: {cliente['ID']}, Nombre: {cliente['Nombre_completo']}")
+                    print(f"-ID: {cliente['ID']}, Nombre: {cliente['Nombre_completo']}")
+                    
+        print("-"*40)   
+                
+        if not continuar_o_menu("¿Desea ir al menu?"):
+            break
 
 # Ejecución
 #busqueda_cliente()
@@ -241,3 +283,4 @@ def listar_clientes():
 #eliminar_cliente()
 #cargar_clientes()
 #modificar_cliente()
+menu_de_cliente()

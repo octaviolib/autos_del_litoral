@@ -21,26 +21,55 @@ def alta_auto():
 
     if modelo.upper() == "VOLVER":
         return
-    
-    anio = input("año (escriba VOLVER para cancelar): ")
+    #pide entero desde validaciones
 
-    if anio.upper() == "VOLVER":
+    anio = pedir_entero("Año (escriba VOLVER para cancelar): ")
+
+    if anio is None:
+        return
+    
+    kilometros = pedir_entero("kilometros (escriba VOLVER para cancelar): ")
+
+    if kilometros is None:
         return
     # Solicitar y validar el precio en el menu validaciones
     precio = pedir_float("Precio (escriba VOLVER para cancelar): ")
 
+
     if precio is None:
         return
-#crea el diccionario  del auto que se va a cargar y l ID se calcula como la
-#cantidad actual de autos + 1
+    print("\nMoneda del precio:")
+    print("1. Pesos")
+    print("2. Dólares")
+
+    opcion_moneda = input("Seleccione una opción: ")
+
+    if opcion_moneda == "1":
+        moneda = "pesos"
+
+    elif opcion_moneda == "2":
+        moneda = "dolares"
+
+    else:
+        print("Opción inválida")
+        return
+
+
+    if len(autos) == 0:
+       nuevo_id = 1
+    else:
+        nuevo_id = max(auto["id"] for auto in autos) + 1
+
 
     auto = {
-        "id": len(autos) + 1,
+        "id": nuevo_id,
         "patente": patente,
         "marca": marca,
         "modelo": modelo,
         "anio": int(anio),
         "precio": float(precio),
+        "moneda": moneda,
+        "kilometros":int(kilometros),
         "estado": "en venta"
     }
 # Agrega el auto a la lista y guarda los cambios
@@ -60,13 +89,14 @@ def listar_autos():
 # Recorre y muestra los datos de los autos 
     for auto in autos:
 
-        print("\n------------------")
+        print("------------------")
         print("ID:", auto["id"])
         print("Patente:", auto["patente"])
         print("Marca:", auto["marca"])
         print("Modelo:", auto["modelo"])
-        print("Precio:", auto["precio"])
+        print("Precio:", auto["precio"], auto["moneda"])
         print("Estado:", auto["estado"])
+        print("kilometros:",auto["kilometros"])
         print("año:", auto["anio"])
 #busca un auto por su patente, seria el id que se usa 
 def buscar_auto():
@@ -86,6 +116,7 @@ def buscar_auto():
             print("Modelo:", auto["modelo"])
             print("Precio:", auto["precio"])
             print("Estado:", auto["estado"])
+            print("Kilómetros:", auto["kilometros"])
             print("año", auto["anio"])
 
             return
@@ -149,6 +180,8 @@ def modificar_auto():
             auto["marca"] = input("Nueva marca: ")
             auto["modelo"] = input("Nuevo modelo: ")
             auto["precio"] = float(input("Nuevo precio: "))
+            auto["anio"] = pedir_entero("Nuevo año: ")
+            auto["kilometros"] = pedir_entero("Nuevos kilómetros: ")
 
             guardar_datos(autos)
 

@@ -1,10 +1,14 @@
-from datos import * #importa datos desde  el modulo datos
+#autos en stock
+
+from datos import * #importa datos desde  el modulo datos de menu stock
 from validaciones  import * #importar datos desde el modulo validaciones
+from datetime import date #fecha
 
 # se agrega un nuevo auto en el sistema
-
 def alta_auto():
 
+    fecha_alta = str(date.today())
+   
     autos = cargar_datos()
 
     patente = input("patente (escriba VOLVER para cancelar): ")
@@ -70,6 +74,7 @@ def alta_auto():
         "precio": float(precio),
         "moneda": moneda,
         "kilometros":int(kilometros),
+        "fecha_alta": fecha_alta,
         "estado": "en venta"
     }
 # Agrega el auto a la lista y guarda los cambios
@@ -79,7 +84,7 @@ def alta_auto():
     print("Auto cargado correctamente.")
 
 #aca muestra todos los autos cargados
-def listar_autos():
+def mostrar_lista_autos():
 # Carga la lista de autos desde el archivo
     autos = cargar_datos()
 #se sale si no hay autos
@@ -98,6 +103,7 @@ def listar_autos():
         print("Estado:", auto["estado"])
         print("kilometros:",auto["kilometros"])
         print("año:", auto["anio"])
+        print("Fecha de alta:", auto["fecha_alta"])
 #busca un auto por su patente, seria el id que se usa 
 def buscar_auto():
 # Carga la lista de autos
@@ -150,7 +156,9 @@ def cambiar_estado_auto():
                 auto["estado"] = "reservado"
 
             elif opcion == "3":
+
                 auto["estado"] = "vendido"
+                auto["fecha_venta"] = str(date.today())
 
             elif opcion == "4":
                 auto["estado"] = "en taller"

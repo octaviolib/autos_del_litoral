@@ -1,11 +1,32 @@
+import json
+import os
 from datetime import datetime, timedelta
+import clientes 
+import autos
 
 reservas = [] 
-id_reserva = 1
+
+def cargar_reservas():
+    global reservas
+
+    if os.path.exists("reservas.json"):
+        with open("reservas.json", "r", encoding="utf-8") as archivo:
+            try:
+                reservas = json.load(archivo)
+            except json.JSONDecodeError:
+                reservas = []
+    else:
+        reservas = []
+
+def guardar_reservas():
+    with open("reservas.json", "w", encoding="utf-8") as archivo:
+        json.dump(reservas, archivo, indent=2, ensure_ascii=False)
 
 def menu_reservas():
     while True:
-        print('  MENÚ RESERVAS\n')
+        print("\n" + "=" * 40)
+        print('  MENÚ RESERVAS')
+        print("=" * 40)
         print('1. Crear reserva')
         print('2. Mostrar reserva')
         print('3. Buscar reserva')
@@ -30,7 +51,11 @@ def menu_reservas():
             print('Opción Inválida, vuelve a intentar')
 
 def crear_reserva():           
-    global id_reserva          
+    if len(reservas) > 0:
+        id_reserva = reservas[-1]["id_reserva"] + 1
+    else:
+        id_reserva = 1
+        
     while True:
         try:
             fecha_texto = input("Ingrese la fecha de reserva (DD/MM/AAAA): ")
@@ -50,11 +75,62 @@ def crear_reserva():
             
     dias_vigencia = 30
     fecha_limite = fecha_reserva + timedelta(days=dias_vigencia)    
+
+    clientes.cargar_clientes()
+
+    while True:
+        try:
+            id_cliente = int(input("Ingrese el ID del cliente: "))
+        except ValueError:
+            print("Ingrese un número válido.")
+            continue
+
+        cliente_encontrado = False
+
+        for cliente in clientes.CLIENTES:
+            if cliente["ID"] == id_cliente:
+                cliente_encontrado = True
+                break
     
+        if cliente_encontrado:
+            break
+
+        print("No existe un cliente con es ID.")
+    
+    autos_disponibles = autos.cargar_datos()
+
+    while True:
+        try: 
+            id_auto = int(input("Ingrese el ID del auto: "))
+        except ValueError:
+            print("Ingrese un número válido.")
+            continue
+        
+        auto_encontrado = False
+        auto_disponible = False
+
+        for auto in autos_disponibles:
+            if auto["id"] == id_auto:
+                    
+                auto_encontrado = True
+
+                if auto["estado"] == "en venta":
+                    auto_disponible = True
+                else:
+                    print(f"El auto no está disponible. Estado actual: {auto['estado']}")
+                
+                break
+                    
+        if auto_disponible:
+            break
+        
+        if not auto_encontrado: 
+            print("No existe un auto con ese ID.")
+
     reserva = {
         "id_reserva": id_reserva,
-        "id_cliente": 1,
-        "id_auto": 1,
+        "id_cliente": id_cliente,
+        "id_auto": id_auto,
         "id_vendedor" : 1, 
         "fecha_reserva": fecha_reserva.strftime("%d/%m/%Y"),
         "monto_sena": monto_sena,
@@ -63,8 +139,15 @@ def crear_reserva():
     }
 
     reservas.append(reserva)
-    id_reserva += 1
+    guardar_reservas()
 
+    for auto in autos_disponibles:
+        if auto["id"] == id_auto:
+            auto["estado"] = "reservado"
+            break
+
+    autos.guardar_datos(autos_disponibles)
+    
     print("=" * 40)
     print("RESERVA REGISTRADA")
     
@@ -122,10 +205,26 @@ def cancelar_reserva():
 
             mostrar_reserva_formateada(reserva)
 
+            if reserva["estado"] == "Cancelado": 
+                print("La reserva ya está cancelada.")
+                pausar()
+                return
+
             cancelar = input("\n ¿Desea cancelar la reserva? (Si/No): ").lower()
 
             if cancelar == "si":
                 reserva["estado"] = "Cancelado"
+                guardar_reservas()
+
+                autos_disponibles = autos.cargar_datos()
+
+                for auto in autos_disponibles:
+                    if auto["id"] == reserva["id_auto"]:
+                        auto["estado"] = "en venta"
+                        break
+                
+                autos.guardar_datos(autos_disponibles)
+
                 print("\n RESERVA CANCELADA CORRECTAMENTE.")
                 mostrar_reserva_formateada(reserva)
 
@@ -136,7 +235,6 @@ def cancelar_reserva():
                 print('Opción inválida')
 
             pausar()
-
             return
 
     print("=" * 40)
@@ -159,20 +257,41 @@ def concretar_reserva():
 
             mostrar_reserva_formateada(reserva)
 
+            if reserva["estado"] == "Cancelado":
+                print("No se puede concretar una reserva cancelada.")
+                pausar()
+                return
+
+            if reserva["estado"] == "Concretada":
+                print("La reserva ya fue concretada.")
+                pausar()
+                return
+
             concretar = input("¿Desea concretar la reserva? (Si/No): ").lower()
 
             if concretar == "si":
-                reserva["estado"] = "Activo"
-                print("Estado de la reseva: CONCRETADO")
+                reserva["estado"] = "Concretado"
+                guardar_reservas()
 
+                autos_disponibles = autos.cargar_datos()
+
+                for auto in autos_disponibles:
+                    if auto["id"] == reserva["id_auto"]:
+                        auto["estado"] = "vendido"
+                        break
+
+                autos.guardar_datos(autos_disponibles)
+
+                print("\nRESERVA CONCRETADA CORRECTAMENTE.")
+                mostrar_reserva_formateada(reserva)
+            
             elif concretar == "no":
-                print("La reserva continúa: RESERVADA")
+                print("\nLa reserva continúa: RESERVADA")
 
             else:
                 print('Opción inválida')
 
             pausar()
-
             return
 
     print("=" * 40)
@@ -197,8 +316,6 @@ def mostrar_reserva_formateada(reserva):
 def pausar():
     input(f'\n Presione ENTER para continuar...')
 
-def volver_al_menu_principal():
-    pass
-
 if __name__ == "__main__":
+    cargar_reservas()
     menu_reservas()

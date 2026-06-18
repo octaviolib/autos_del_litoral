@@ -1,15 +1,28 @@
+import json
 from datetime import date
-
 
 vendedores = []
 ventas = []
-
 id_vendedor = 1
 
+ARCHIV_VENDEDORES = "vendedores.json"
+def guardar_datos():
+    datos = {"ultimo_id": id_vendedor, "lista_vendedores": vendedores}
+    with open(ARCHIV_VENDEDORES,"w") as archivo:
+        json.dump(datos, archivo, indent=4)
 
-# ==========================
+def cargar_datos():
+    global vendedores, id_vendedor
+    try:
+        with open(ARCHIV_VENDEDORES, "r") as archivo:
+            datos = json.load(archivo)
+            id_vendedor = datos["ultimo_id"]
+            vendedores = datos["lista_vendedores"]
+    except FileNotFoundError:
+        pass
+    
 # ALTA DE VENDEDOR
-# ==========================
+
 def registrar_vendedor():
     global id_vendedor
 
@@ -30,7 +43,7 @@ def registrar_vendedor():
         "telefono": telefono,
         "email": email,
         "comision_porcentaje": comision,
-        "fecha_ingreso": date.today(),
+        "fecha_ingreso": str(date.today()),
         "estado": "activo"
     }
 
@@ -38,11 +51,10 @@ def registrar_vendedor():
     id_vendedor += 1
 
     print("Vendedor registrado correctamente.")
+    guardar_datos()
 
-
-# ==========================
 # LISTAR VENDEDORES
-# ==========================
+
 def listar_vendedores():
     if len(vendedores) == 0:
         print("No hay vendedores cargados.")
@@ -56,10 +68,8 @@ def listar_vendedores():
         print("Comisión:", v["comision_porcentaje"], "%")
         print("Estado:", v["estado"])
 
-
-# ==========================
 # BUSCAR VENDEDOR
-# ==========================
+
 def buscar_vendedor():
     dato = input("Ingrese DNI o nombre: ")
 
@@ -83,10 +93,8 @@ def buscar_vendedor():
 
     print("Vendedor no encontrado.")
 
-
-# ==========================
 # ACTUALIZAR COMISION
-# ==========================
+
 def actualizar_comision():
     id_buscar = int(input("ID del vendedor: "))
 
@@ -95,38 +103,33 @@ def actualizar_comision():
             nueva = float(input("Nueva comisión (%): "))
             v["comision_porcentaje"] = nueva
             print("Comisión actualizada.")
+            guardar_datos()
             return
 
     print("Vendedor no encontrado.")
 
-
-# ==========================
 # BAJA DE VENDEDOR
-# ==========================
+
 def baja_vendedor():
     id_buscar = int(input("ID del vendedor: "))
 
     for v in vendedores:
         if v["id"] == id_buscar:
 
-            confirmar = input(
-                "¿Seguro que desea darlo de baja? (S/N): "
-            )
+            confirmar = input("¿Seguro que desea darlo de baja? (S/N): ")
 
             if confirmar.upper() == "S":
                 v["estado"] = "inactivo"
                 print("Vendedor dado de baja.")
+                guardar_datos()
             return
 
     print("Vendedor no encontrado.")
 
-
-# ==========================
 # MENU VENDEDORES
-# ==========================
-def menu_vendedores():
 
-    while True:
+def menu_vendedores():cargar_datos()
+while True:
 
         print("\n===== VENDEDORES =====")
         print("1. Registrar vendedor")
@@ -158,4 +161,4 @@ def menu_vendedores():
 
         else:
             print("Opción inválida.")
-#menu_vendedores()
+menu_vendedores()

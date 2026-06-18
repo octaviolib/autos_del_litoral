@@ -1,10 +1,13 @@
 [
     {
         "id": 1,
-        "patente": "tse326",
-        "marca": "vw",
-        "modelo": "gacel",
-        "precio": 10000.0,
-        "estado": "reservado"
+        "patente": "AAA111",
+        "marca": "FIAT",
+        "modelo": "UNO",
+        "anio": 1995,
+        "precio": 3000.0,
+        "moneda": "pesos",
+        "kilometros": 60000,
+        "estado": "en venta"
     }
 ]

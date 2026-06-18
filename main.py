@@ -5,9 +5,9 @@ from clientes import menu_de_cliente
 def main():
     while True:  # Mantiene el programa activo hasta que el usuario elija salir
         # Muestra el menú principal
-        print("\n============================")
+        print("************************************************")
         print("     AUTOS DEL LITORAL")
-        print("============================")
+        print("************************************************")
         print("1. Autos en stock")
         print("2. Clientes")
         print("3. Ventas")

@@ -36,6 +36,7 @@ def menu_autos():
             modificar_auto()
 
         elif opcion == "9":
+            print("Volviendo al menú principal...")
             break
 
         else:

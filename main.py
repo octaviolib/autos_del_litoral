@@ -25,7 +25,7 @@ def main():
             menu_reservas()       
         elif opcion == "5":
             menu_vendedores()     
-        elif opcion == "0":
+        elif opcion == "3":
             print("Programa finalizado")
             break 
         else:

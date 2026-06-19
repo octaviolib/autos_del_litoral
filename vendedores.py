@@ -128,8 +128,9 @@ def baja_vendedor():
 
 # MENU VENDEDORES
 
-def menu_vendedores():cargar_datos()
-while True:
+def menu_vendedores():
+    cargar_datos()
+    while True:
 
         print("\n===== VENDEDORES =====")
         print("1. Registrar vendedor")

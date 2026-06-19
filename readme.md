@@ -43,9 +43,10 @@ ID cliente
 ID auto
 ID vendedor
 fecha de reserva
-
-ROMERO SUSANA 
 monto de la seña
 fecha límite 
+
+ROMERO SUSANA 
+
 
 Trabajo Final - Programación I Universidad Nacional de Entre Rios 

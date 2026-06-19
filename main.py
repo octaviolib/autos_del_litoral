@@ -1,5 +1,4 @@
-from menu_autos import menu_autos              # Importa los menú correspondientes a cada modulo correspondiente
-from vendedores import menu_vendedores   
+from menu_autos import menu_autos             # Importa los menú correspondientes a cada modulo correspondiente
 from reservas import menu_reservas      
 from clientes import menu_de_cliente     
 def main():
@@ -24,7 +23,7 @@ def main():
         elif opcion == "4":
             menu_reservas()       
         elif opcion == "5":
-            menu_vendedores()     
+            print("Módulo vendedores en desarrollo")    
         elif opcion == "0":
             print("Programa finalizado")
             break 

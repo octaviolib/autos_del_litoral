@@ -1,6 +1,7 @@
 from menu_autos import menu_autos             # Importa los menú correspondientes a cada modulo correspondiente
 from reservas import menu_reservas      
-from clientes import menu_de_cliente     
+from clientes import menu_de_cliente    
+from vendedores import menu_vendedores
 def main():
     while True:  # Mantiene el programa activo hasta que el usuario elija salir
         # Muestra el menú principal

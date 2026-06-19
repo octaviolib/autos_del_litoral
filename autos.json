@@ -1,27 +1,14 @@
 [
     {
-        "id": 2,
-        "patente": "tse326",
-        "marca": "vw",
-        "modelo": "senda",
-        "anio": 1988,
-        "precio": 18000.0,
-        "moneda": "pesos",
-        "kilometros": 250000,
-        "fecha_alta": "2026-06-17",
-        "estado": "en venta"
-    },
-    {
-        "id": 3,
-        "patente": "aaa111",
-        "marca": "fiat",
-        "modelo": "duna",
-        "anio": 1994,
-        "precio": 20000.0,
-        "moneda": "pesos",
-        "kilometros": 320000,
+        "id": 1,
+        "patente": "aa111aa",
+        "marca": "ford",
+        "modelo": "focus",
+        "anio": 2015,
+        "precio": 8000.0,
+        "moneda": "dolares",
+        "kilometros": 100000,
         "fecha_alta": "2026-06-18",
-        "estado": "vendido",
-        "fecha_venta": "2026-06-18"
+        "estado": "en venta"
     }
 ]

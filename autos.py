@@ -106,14 +106,14 @@ def mostrar_lista_autos():
         print("Fecha de alta:", auto["fecha_alta"])
 #busca un auto por su patente, seria el id que se usa 
 def buscar_auto():
-# Carga la lista de autos
+
     autos = cargar_datos()
 
-    patente = input("escriba la patente a buscar: ")
-# Recorre los autos comparando patentes sin diferenciar mayusculas o minusculas
+    dato = input("Ingrese ID o patente a buscar: ")
+
     for auto in autos:
 
-        if auto["patente"].lower() == patente.lower():
+        if str(auto["id"]) == dato or auto["patente"].lower() == dato.lower():
 
             print("\nAUTO ENCONTRADO")
             print("ID:", auto["id"])
@@ -123,7 +123,7 @@ def buscar_auto():
             print("Precio:", auto["precio"])
             print("Estado:", auto["estado"])
             print("Kilómetros:", auto["kilometros"])
-            print("año", auto["anio"])
+            print("Año:", auto["anio"])
 
             return
 

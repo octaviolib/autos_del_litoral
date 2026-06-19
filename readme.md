@@ -1,4 +1,5 @@
-Autos del Litoral - Modulo de Stock
+Autos del Litoral_ Grupo 77 
+- Modulo de Stock -Octavio Libedinsky
 Descripción
 
 Este proyecto fue desarrollado en Python para el trabajo final de Programación I.

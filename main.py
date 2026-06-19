@@ -24,7 +24,7 @@ def main():
         elif opcion == "4":
             menu_reservas()       
         elif opcion == "5":
-            print("Módulo vendedores en desarrollo")    
+            menu_vendedores()   
         elif opcion == "0":
             print("Programa finalizado")
             break 

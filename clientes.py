@@ -276,11 +276,5 @@ def listar_clientes():
         if not continuar_o_menu("¿Desea ir al menu?"):
             break
 
-# Ejecución
-#busqueda_cliente()
-#listar_clientes()
-#registrar_clientes()
-#eliminar_cliente()
-#cargar_clientes()
-#modificar_cliente()
-menu_de_cliente()
+if __name__=="__main__":
+    menu_de_cliente()

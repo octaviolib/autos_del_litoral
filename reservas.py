@@ -50,7 +50,10 @@ def menu_reservas():
         else:
             print('Opción Inválida, vuelve a intentar')
 
-def crear_reserva():           
+def crear_reserva():  
+
+    cargar_reservas()
+
     if len(reservas) > 0:
         id_reserva = reservas[-1]["id_reserva"] + 1
     else:
@@ -169,7 +172,7 @@ def mostrar_reserva():
 def buscar_reserva():
     while True:
         try:
-            id_buscado = int(input('Ingrese el id_reserva: '))
+            id_buscado = int(input('Ingrese el ID de la reserva: '))
             break
         except ValueError:
             print("Ingrese un número válido.")
@@ -193,7 +196,7 @@ def buscar_reserva():
 def cancelar_reserva():
     while True:
         try:
-            id_buscado = int(input('Ingrese el id_reserva a cancelar: '))
+            id_buscado = int(input('Ingrese el ID de la reserva a cancelar: '))
             break
         except ValueError:
             print("Ingrese un número válido.")
@@ -243,9 +246,12 @@ def cancelar_reserva():
     pausar()
 
 def concretar_reserva():
+
+    cargar_reservas()
+
     while True:
         try:
-            id_buscado = int(input('Ingrese el id_reserva a concretar: '))
+            id_buscado = int(input('Ingrese el ID de la reserva a concretar: '))
             break
         except ValueError:
             print("Ingrese un número válido.")
@@ -262,12 +268,12 @@ def concretar_reserva():
                 pausar()
                 return
 
-            if reserva["estado"] == "Concretada":
+            if reserva["estado"] == "Concretado":
                 print("La reserva ya fue concretada.")
                 pausar()
                 return
 
-            concretar = input("¿Desea concretar la reserva? (Si/No): ").lower()
+            concretar = input("¿Desea concretar la reserva? (Si/No): ").lower().strip()
 
             if concretar == "si":
                 reserva["estado"] = "Concretado"

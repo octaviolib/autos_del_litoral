@@ -1,6 +1,6 @@
 from menu_autos import menu_autos             # Importa los menú correspondientes a cada modulo correspondiente
 from reservas import menu_reservas
-from ventas import menu_ventas
+from menu_ventas import menu_ventas
 from clientes import menu_de_cliente    
 from vendedores import menu_vendedores
 def main():
